@@ -1,0 +1,52 @@
+version: '3'
+services:
+  elasticsearch:
+    image: 'elasticsearch:7.2.0'
+    restart: always
+    volumes:
+      - ./elasticsearch.yaml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    environment:
+      ES_JAVA_OPTS: '-Xmx512m -Xms512m'
+      ELASTIC_PASSWORD: 999biyan
+    networks:
+      elk:
+        ipv4_address: 10.10.10.11
+
+  logstash:
+    image: 'logstash:7.2.0'
+    restart: always
+    volumes:
+      - ./logstash.yaml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash:/usr/share/logstash/pipeline:ro
+    ports:
+      - '5000:5000'
+      - '9600:9600'
+    environment:
+      LS_JAVA_OPTS: '-Xmx512m -Xms512m'
+    networks:
+      elk:
+        ipv4_address: 10.10.10.12
+    depends_on:
+      - elasticsearch
+  kibana:
+    image: 'kibana:7.2.0'
+    restart: always
+    volumes:
+      - ./kibana.yaml:/usr/share/kibana/config/kibana.yml:ro
+    ports:
+      - '5601:5601'
+    depends_on:
+      - elasticsearch
+    networks:
+      elk:
+        ipv4_address: 10.10.10.13
+networks:
+  elk:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.10.10.0/24

@@ -46,19 +46,19 @@ services:
       base_net:
         ipv4_address: 192.168.110.106
 
-  nginx:
-    image: "nginx:1.17-alpine"
-    container_name: nginx
-    ports:
-      - "8080:80"
-    volumes:
-      - $PWD/config/nginx.conf:/etc/nginx/nginx.conf:ro
-      - $PWD/config/nginx.d:/etc/nginx/conf.d:ro
-      - $PWD/data/nginx/log:/var/log/nginx
-      - $PWD/data/nginx/www:/var/www
-    networks:
-      base_net:
-        ipv4_address: 192.168.110.118
+  # nginx:
+  #   image: "nginx:1.17-alpine"
+  #   container_name: nginx
+  #   ports:
+  #     - "8080:80"
+  #   volumes:
+  #     - $PWD/config/nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - $PWD/config/nginx.d:/etc/nginx/conf.d:ro
+  #     - $PWD/data/nginx/log:/var/log/nginx
+  #     - $PWD/data/nginx/www:/var/www
+  #   networks:
+  #     base_net:
+  #       ipv4_address: 192.168.110.118
 
 networks:
   base_net:

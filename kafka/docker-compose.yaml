@@ -1,0 +1,27 @@
+version: "3.7"
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    expose:
+      - "2181"
+    networks:
+      kk:
+        ipv4_address: 10.10.11.11
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_HOST_NAME: 10.0.1.167
+    networks:
+      kk:
+        ipv4_address: 10.10.11.12
+
+networks:
+  kk:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.10.11.0/24
