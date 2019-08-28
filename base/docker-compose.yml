@@ -7,12 +7,11 @@ services:
       - "3306:3306"
     volumes:
       - $PWD/data/mysql:/var/lib/mysql
+      - $PWD/migration:/docker-entrypoint-initdb.d
     restart: always
     container_name: mysql
     environment:
-      MYSQL_ROOT_PASSWORD: tianma6xingquan!
-      MYSQL_USER: guest
-      MYSQL_PASSWORD: guest
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     networks:
       base_net:
         ipv4_address: 192.168.110.101
@@ -20,6 +19,7 @@ services:
   redis:
     image: "redis:5-alpine"
     container_name: redis
+    restart: always
     ports:
       - "6379:6379"
     volumes:
@@ -34,9 +34,10 @@ services:
   rabbitmq:
     image: "rabbitmq:management-alpine"
     container_name: rabbit
+    restart: always
     environment:
-      RABBITMQ_DEFAULT_USER: guest
-      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
     ports:
       - "5672:5672"
       - "15672:15672"
