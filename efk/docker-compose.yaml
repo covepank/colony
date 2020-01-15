@@ -1,0 +1,36 @@
+version: "3"
+services:
+  elasticsearch:
+    image: elasticsearch:7.5.1
+    container_name: es
+    restart: always
+    volumes:
+      - ./elasticsearch.yaml:/usr/share/elasticsearch/config/elasticsearch.yml:ro
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx512m -Xms512m"
+      ELASTIC_PASSWORD: 999biyan
+
+  fluentd:
+    image: uneil/fluentd:v1.8-custom
+    container_name: fluentd
+    volumes:
+      - ./fluent.conf:/fluentd/etc/fluent.conf
+    depends_on:
+      - elasticsearch
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+
+  kibana:
+    image: "kibana:7.5.1"
+    container_name: kibana
+    restart: always
+    volumes:
+      - ./kibana.yaml:/usr/share/kibana/config/kibana.yml:ro
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
