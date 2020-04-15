@@ -1,0 +1,65 @@
+version: "3.1"
+services:
+  master1:
+    image: "redis:5-alpine"
+    container_name: redis-master1
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - /Users/neilfu/Data/redis/master1:/data
+      - $PWD/master1.conf:/etc/redis/redis.conf:ro
+    command: redis-server /etc/redis/redis.conf
+
+  slaver1:
+    image: "redis:5-alpine"
+    container_name: redis-slaver1
+    restart: always
+    ports:
+      - "6380:6379"
+    volumes:
+      - /Users/neilfu/Data/redis/slaver1:/data
+      - $PWD/slaver1.conf:/etc/redis/redis.conf:ro
+    command: redis-server /etc/redis/redis.conf
+
+  slaver2:
+    image: "redis:5-alpine"
+    container_name: redis-slaver2
+    restart: always
+    ports:
+      - "6381:6379"
+    volumes:
+      - /Users/neilfu/Data/redis/slaver2:/data
+      - $PWD/slaver2.conf:/etc/redis/redis.conf:ro
+    command: redis-server /etc/redis/redis.conf
+
+  sentinel1:
+    image: "redis:5-alpine"
+    container_name: redis-sentinel1
+    restart: always
+    ports:
+      - "16379:6379"
+    volumes:
+      - /Users/neilfu/Data/redis/sentinel1:/data
+      - $PWD/sentinel.conf:/etc/redis/redis.conf:ro
+    command: redis-server /etc/redis/redis.conf --sentinel
+  sentinel2:
+    image: "redis:5-alpine"
+    container_name: redis-sentinel2
+    restart: always
+    ports:
+      - "16380:6379"
+    volumes:
+      - /Users/neilfu/Data/redis/sentinel2:/data
+      - $PWD/sentinel.conf:/etc/redis/redis.conf:ro
+    command: redis-server /etc/redis/redis.conf --sentinel
+  sentinel3:
+    image: "redis:5-alpine"
+    container_name: redis-sentinel3
+    restart: always
+    ports:
+      - "16381:6379"
+    volumes:
+      - /Users/neilfu/Data/redis/sentinel3:/data
+      - $PWD/sentinel.conf:/etc/redis/redis.conf:ro
+    command: redis-server /etc/redis/redis.conf --sentinel

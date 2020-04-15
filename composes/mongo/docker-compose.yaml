@@ -11,7 +11,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: eil
       MONGO_INITDB_ROOT_PASSWORD: tianma6xingquan!
     volumes:
-      - /data/mongo:/data/db
+      - $PWD/mongo:/data/db
 
   mongo-express:
     image: mongo-express
