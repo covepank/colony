@@ -1,0 +1,20 @@
+---
+- name: install/update base package
+  hosts: dev1
+  remote_user: covepank
+  gather_fact: no
+  tasks:
+    - name: Update all packages to the latest version
+      become: yes
+      apt:
+        upgrade: safe
+
+    - name: Install git/zsh/gcc/make
+      become: yes
+      apt:
+        pkg:
+          - git
+          - zsh
+          - gcc
+          - make
+        state: latest
