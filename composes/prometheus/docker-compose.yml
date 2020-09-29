@@ -1,0 +1,39 @@
+version: "3"
+services:
+  prome-server:
+    image: prom/prometheus:v2.21.0
+    container_name: prome-server
+    restart: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./promethus.yml:/etc/prometheus/prometheus.yml
+      - ./rules:/etc/prometheus/rules
+      - ${prom_data:-./data/prom}:/prometheus
+    networks:
+      - prom
+  grafana:
+    image: grafana/grafana:latest
+    container_name: gra
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - ${grafana_data:-./data/grafana}:/var/lib/grafana
+    networks:
+      - prom
+  alertmanager:
+    image: prom/alertmanager:v0.21.0
+    container_name: alert
+    restart: always
+    ports:
+      - "9093:9093"
+    volumes:
+      - ./alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - ${alert_data:-/data/alert}:/alertmanager
+    networks:
+      - prom
+
+networks:
+  prom:
+    driver: bridge

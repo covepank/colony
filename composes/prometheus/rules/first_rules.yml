@@ -1,0 +1,20 @@
+groups:
+  - name: example
+    rules:
+      - alert: HighErrorRate
+        expr: api_http_request_latencies_second{quantile="0.5"} > 1
+        for: 10s
+        labels:
+          severity: page
+        annotations:
+          summary: "High request latency on {{ $labels.instance }}"
+          description: "{{ $labels.instance }} has a median request latency above 1s (current value: {{ $value }}s)"
+
+      - alert: no metric
+        expr: up == 1
+        for: 1s
+        labels:
+          label1: one up
+        annotations:
+          summary: "can't find instance"
+          description: "this is a description"
